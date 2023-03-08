@@ -140,3 +140,6 @@ model/multi/mlp/multi_mlp_corr_*
 model/multi/mlp/multi_mlp_all_*
 dataset-metadata.json
 .ipynb_checkpoints
+
+# Mac files
+.DS_Store
