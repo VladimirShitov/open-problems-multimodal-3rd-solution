@@ -107,4 +107,4 @@ X_train_result['flg_all_val'] = np.where(X_train_result['rank_all'] < 10000, 1, 
 print(X_train_result[X_train_result['flg_donor_val'] == 1]['donor'].value_counts())
 print(X_train_result[X_train_result['flg_all_val'] == 1]['donor'].value_counts())
 
-X_train_result.to_pickle(validation_path + 'multi_fold_val_df.pickle')
+X_train_result.to_pickle(validation_path + 'multi_fold_random_val_df.pickle')
