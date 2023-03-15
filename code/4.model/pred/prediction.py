@@ -97,7 +97,10 @@ model_name_list
 # +
 weight = [1, 0.3, 1, 1, 1, 1, 1, 1, 1, 0.8, 0.8, 0.8, 0.8, 0.5, 0.5, 0.5, 1, 1, 2, 2]
 weight_sum = np.array(weight).sum()
-weight_sum
+print("weight_sum for cite:", weight_sum)
+
+cite_skiped_model_idx = os.getenv("CITE_SKIPPED_MODEL_IDX")
+print("Skipping cite model with index", cite_skiped_model_idx)
 
 model_feat_dict = {model_name_list[0]:['X_test_add_con_imp.pickle', 1],
                    model_name_list[1]:['X_test_last_v3.pickle', 0.3],
@@ -330,6 +333,9 @@ pred = np.zeros([48203, 140])
 for num, i in enumerate(model_feat_dict.keys()):
     
     print(i)
+    if num == cite_skiped_model_idx:
+        print("Skipping model")
+        continue
     
     if 'mlp' in i:
         
@@ -373,6 +379,8 @@ for num, i in enumerate(model_feat_dict.keys()):
         pred += std(cb_pred) * test_weight / weight_sum
         
         #del cb_pred
+
+    print("Updated prediction")
 # -
 
 cite_sub = pd.DataFrame(pred.round(6))
@@ -433,7 +441,10 @@ weight = [2.5, 2.5, 2.5, 1.2, 1.2, 1.2, 1,
           2.5, 2.5, 1.8, 0.8, 1, 0.8, 1 ,0.8, 1, 0.3, 
           0.3, 0.3, 0.3, 0.2, 0.2, 0.2]
 weight_sum = np.array(weight).sum()
-weight_sum
+print("weight_sum for multi:", weight_sum)
+
+multi_skiped_model_idx = os.getenv("MULTI_SKIPPED_MODEL_IDX")
+print("Skipping multi model with index", multi_skiped_model_idx)
 
 model_feat_dict = {model_name_list[0]:['multi_test_con_16.pickle', 2.5],
                    model_name_list[1]:['multi_test_con_32.pickle', 2.5],
@@ -659,6 +670,9 @@ svd = pickle.load(open(multi_target_path + 'multi_all_target_128.pkl', 'rb'))
 for num, i in enumerate(model_feat_dict.keys()):
     
     print(i)
+    if num == multi_skiped_model_idx:
+        print("Skipping model")
+        continue
     
     if 'mlp' in i:
         
@@ -708,6 +722,8 @@ for num, i in enumerate(model_feat_dict.keys()):
         pred += cb_pred * test_weight / weight_sum
         
         #del cb_pred
+
+    print("Updated prediction")
 # -
 
 multi_sub = pd.DataFrame(pred.round(6)).astype(np.float32)
@@ -798,7 +814,13 @@ submission = submission.round(6)
 submission = pd.DataFrame(submission, columns = ['target'])
 submission = submission.reset_index()
 
-submission[['row_id', 'target']].to_csv(output_path + 'submission.csv', index = False)
+submission_name = "submission"
+if cite_skiped_model_idx:
+    submission_name += f"_cite_skip_{cite_skiped_model_idx}"
+if multi_skiped_model_idx:
+    submission_name += f"_multi_skip_{multi_skiped_model_idx}"
+
+submission[['row_id', 'target']].to_csv(output_path + submission_name + '.csv', index = False)
 
 # +
 # #!kaggle competitions submit -c open-problems-multimodal -f $sub_name_csv -m $message
