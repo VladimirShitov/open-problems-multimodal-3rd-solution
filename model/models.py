@@ -72,3 +72,25 @@ class CiteModel_mish(nn.Module):
         out = self.head(X)
 
         return out
+
+
+class OneLayerPerceptron(nn.Module):
+    """One layer perceptron"""
+
+    def __init__(self, feature_num):
+        super(CiteModel_mish, self).__init__()
+
+        self.layer = nn.Sequential(nn.Linear(feature_num, 128),
+                                   nn.LayerNorm(128),
+                                   nn.ReLU()
+                                   )
+
+        self.head = nn.Linear(128, 140)
+
+    def forward(self, X, y=None):
+
+        X = self.layer(X)
+        out = self.head(X)
+
+        return out
+    
