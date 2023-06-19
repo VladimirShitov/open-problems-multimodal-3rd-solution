@@ -94,6 +94,26 @@ class OneLayerPerceptron(nn.Module):
 
         return out
     
+class OneLayerPerceptronV2(nn.Module):
+    """One layer perceptron with 256 neurons in the hidden layer"""
+
+    def __init__(self, feature_num):
+        super(CiteModel_mish, self).__init__()
+
+        self.layer = nn.Sequential(nn.Linear(feature_num, 256),
+                                   nn.LayerNorm(256),
+                                   nn.ReLU()
+                                   )
+
+        self.head = nn.Linear(256, 140)
+
+    def forward(self, X, y=None):
+
+        X = self.layer(X)
+        out = self.head(X)
+
+        return out
+    
 class ThreeLayersPerceptron(nn.Module):
     """Three layer perceptron with ReLU activation functions"""
 
@@ -119,9 +139,35 @@ class ThreeLayersPerceptron(nn.Module):
 
         return out
     
+  
+class ThreeLayersPerceptronV2(nn.Module):
+    """Three layer perceptron with ReLU activation functions and 256 neurons in the hidden layers"""
+
+    def __init__(self, feature_num):
+        super(CiteModel_mish, self).__init__()
+
+        self.layer_1 = nn.Sequential(nn.Linear(feature_num, 256),
+                                           nn.Linear(256, 256),
+                                       nn.LayerNorm(256),
+                                       nn.ReLU(),
+                                      )
+        self.layer_2 = nn.Sequential(nn.Linear(256, 256),
+                                       nn.LayerNorm(256),
+                                       nn.ReLU(),
+                                      )
+        self.layer_3 = nn.Linear(256, 140)
+
+    def forward(self, X, y=None):
+
+        X = self.layer_1(X)
+        X = self.layer_2(X)
+        out = self.layer_3(X)
+
+        return out
+    
 
 class FiveLayersPerceptron(nn.Module):
-    """Three layer perceptron with ReLU activation functions"""
+    """Five layer perceptron with ReLU activation functions"""
 
     def __init__(self, feature_num):
         super(CiteModel_mish, self).__init__()
@@ -140,6 +186,41 @@ class FiveLayersPerceptron(nn.Module):
                                         nn.ReLU(),
                                     )
         self.layer_4 = nn.Sequential(nn.Linear(128, 128),
+                                        nn.LayerNorm(128),
+                                        nn.ReLU(),
+                                    )
+        self.layer_5 = nn.Linear(128, 140)
+
+    def forward(self, X, y=None):
+
+        X = self.layer_1(X)
+        X = self.layer_2(X)
+        X = self.layer_3(X)
+        X = self.layer_4(X)
+        out = self.layer_5(X)
+
+        return out
+    
+class FiveLayersPerceptronV2(nn.Module):
+    """Five layer perceptron with ReLU activation functions and more neurons in the hidden layers"""
+
+    def __init__(self, feature_num):
+        super(CiteModel_mish, self).__init__()
+
+        self.layer_1 = nn.Sequential(nn.Linear(feature_num, 256),
+                                           nn.Linear(256, 256),
+                                       nn.LayerNorm(256),
+                                       nn.ReLU(),
+                                      )
+        self.layer_2 = nn.Sequential(nn.Linear(256, 200),
+                                       nn.LayerNorm(200),
+                                       nn.ReLU(),
+                                      )
+        self.layer_3 = nn.Sequential(nn.Linear(200, 180),
+                                        nn.LayerNorm(180),
+                                        nn.ReLU(),
+                                    )
+        self.layer_4 = nn.Sequential(nn.Linear(180, 128),
                                         nn.LayerNorm(128),
                                         nn.ReLU(),
                                     )
