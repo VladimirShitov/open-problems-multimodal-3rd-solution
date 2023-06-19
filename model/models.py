@@ -94,3 +94,27 @@ class OneLayerPerceptron(nn.Module):
 
         return out
     
+class ThreeLayersPerceptron(nn.Module):
+    """Three layer perceptron with ReLU activation functions"""
+
+    def __init__(self, feature_num):
+        super(CiteModel_mish, self).__init__()
+
+        self.layer_1 = nn.Sequential(nn.Linear(feature_num, 256),
+                                           nn.Linear(256, 256),
+                                       nn.LayerNorm(256),
+                                       nn.ReLU(),
+                                      )
+        self.layer_2 = nn.Sequential(nn.Linear(256, 128),
+                                       nn.LayerNorm(128),
+                                       nn.ReLU(),
+                                      )
+        self.layer_3 = nn.Linear(128, 64)
+
+    def forward(self, X, y=None):
+
+        X = self.layer_1(X)
+        X = self.layer_2(X)
+        out = self.layer_3(X)
+
+        return out    
