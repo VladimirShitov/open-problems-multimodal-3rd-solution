@@ -109,7 +109,7 @@ class ThreeLayersPerceptron(nn.Module):
                                        nn.LayerNorm(128),
                                        nn.ReLU(),
                                       )
-        self.layer_3 = nn.Linear(128, 64)
+        self.layer_3 = nn.Linear(128, 140)
 
     def forward(self, X, y=None):
 
@@ -117,7 +117,7 @@ class ThreeLayersPerceptron(nn.Module):
         X = self.layer_2(X)
         out = self.layer_3(X)
 
-        return out    
+        return out
     
 
 class FiveLayersPerceptron(nn.Module):
