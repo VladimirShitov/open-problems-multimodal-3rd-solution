@@ -101,3 +101,17 @@ def valid_loop(model, loader, y_val):
 def std(x):
     x = np.array(x)
     return (x - x.mean(1).reshape(-1, 1)) / x.std(1).reshape(-1, 1)
+
+
+def test_loop(model, loader):
+    
+    model.eval()
+    predicts=[]
+
+    for d in loader:
+        with torch.no_grad():
+            X = d['X'].to(device)
+            logits = model(X)
+            predicts.append(logits.detach().cpu().numpy())
+            
+    return np.concatenate(predicts)
