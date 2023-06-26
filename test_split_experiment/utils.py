@@ -59,7 +59,6 @@ def correl_loss(pred, tgt):
 
 def train_loop(model, optimizer, loader, epoch):
 
-    losses, lrs = [], []
     model.train()
     optimizer.zero_grad()
     #loss_fn = nn.MSELoss()
@@ -82,7 +81,6 @@ def train_loop(model, optimizer, loader, epoch):
 def valid_loop(model, loader, y_val):
 
     model.eval()
-    partial_correlation_scores = []
     oof_pred = []
 
     for d in loader:
