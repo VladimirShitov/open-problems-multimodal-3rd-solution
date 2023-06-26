@@ -1,6 +1,6 @@
-from tqdm import tqdm
+import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 
 device = torch.device("cuda")
 
@@ -98,3 +98,8 @@ def valid_loop(model, loader, y_val):
     logits = torch.cat(oof_pred).detach().cpu().numpy()
 
     return logits, cor
+
+
+def std(x):
+    x = np.array(x)
+    return (x - x.mean(1).reshape(-1, 1)) / x.std(1).reshape(-1, 1)
